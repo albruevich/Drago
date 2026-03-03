@@ -1,0 +1,33 @@
+# Visual Studio / .NET
+.vs/
+bin/
+obj/
+Debug/
+Release/
+AppPackages/
+TestResults/
+
+# Rider IDE
+.idea/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# NuGet packages
+*.nupkg
+*.snupkg
+packages/
+
+# Resharper
+_ReSharper*/
+*.DotSettings.user
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Visual Studio Code
+.vscode/
