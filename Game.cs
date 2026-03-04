@@ -71,7 +71,6 @@ namespace Drago
             // game loop (main loop of the program)
             while (running)
             {
-
                 DateTime start = DateTime.Now; // Measure frame start to keep FPS stable (frame start time)
 
                 HandleInput();  // input                                              
