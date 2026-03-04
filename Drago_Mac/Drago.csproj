@@ -32,6 +32,15 @@
   <ItemGroup>
     <Compile Include="..\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Game.cs" />
+    <Compile Include="Renderer.cs" />
+    <Compile Include="FileManager.cs" />
+    <Compile Include="Dino.cs" />
+    <Compile Include="Obstacle.cs" />
+    <Compile Include="Bush.cs" />
+    <Compile Include="Bird.cs" />
+    <Compile Include="Rect.cs" />
+    <Compile Include="Bonus_OOP.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
