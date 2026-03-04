@@ -42,7 +42,15 @@ namespace Drago
         int birdChance = 26;                   // chance to spawn a bird instead of a bush (percent)       
         bool isGameOver = false;               // game over flag
         bool downArrowPressed = false;         // is Down Arrow pressed
-        int downArrowCounter = 0;              // how long it has been pressed
+
+        // Console applications do not provide a reliable "KeyUp" event.
+        // Because of this, we cannot detect when the DownArrow key is released.
+        // Instead we simulate "holding" the crouch by keeping it active for several frames
+        // after the last DownArrow event is received.
+        int crouchFramesLeft = 0;                 // how many frames the dino should remain crouched
+        const int crouchHoldFramesFirst = 30;     // first press: longer hold to cover the OS key repeat delay
+        const int crouchHoldFramesRepeat = 6;     // repeated presses: shorter extension while the key is being held
+
         bool running;
 
         Random rnd = new Random();             // random number generator
@@ -71,8 +79,7 @@ namespace Drago
 
                 DateTime start = DateTime.Now; // Measure frame start to keep FPS stable (frame start time)
 
-                HandleInput();  // input                
-                dino.BendDown(downArrowPressed);   // update crouching state               
+                HandleInput();  // input                                              
                 Update(dino);  // logic                      
                 renderer.RenderFrame(); // render (it decides what to draw by comparing buffer and oldBuffer)
 
@@ -121,8 +128,12 @@ namespace Drago
 
                 if (key.Key == ConsoleKey.DownArrow)
                 {
-                    downArrowPressed = true;   // start crouching
-                    downArrowCounter = 0;
+                    // If the dino is already crouching, extend the crouch by a small amount.
+                    // If this is the first press, use a longer duration to bridge the keyboard auto-repeat delay.
+                    int hold = (crouchFramesLeft > 0) ? crouchHoldFramesRepeat : crouchHoldFramesFirst;
+
+                    // Keep the larger value so crouch time never shrinks due to rapid input events.
+                    crouchFramesLeft = Math.Max(crouchFramesLeft, hold);
                 }
 
                 if (key.Key == ConsoleKey.Spacebar)
@@ -144,6 +155,7 @@ namespace Drago
 
             // Sub-methods: each piece of logic is separated (easier to read)
             UpdateCrouchTimer();
+            dino.BendDown(downArrowPressed);   // update crouching state
             TrySpawnObstacle();
             TryIncreaseSpeedAndToggleDayNight();
 
@@ -160,20 +172,12 @@ namespace Drago
 
         void UpdateCrouchTimer()
         {
-            // If we're not crouching, no timer is needed
-            if (!downArrowPressed) return;
+            // Decrease crouch timer every frame
+            if (crouchFramesLeft > 0)
+                crouchFramesLeft--;
 
-            downArrowCounter++;
-
-            // Here we convert "crouch time" into ticks, taking the starting speed into account.
-            int crouchTicks = (int)(9 / startObstacleSpeed);
-
-            // Auto-release crouch so the player doesn't have to hold the key
-            if (downArrowCounter > crouchTicks)
-            {
-                downArrowPressed = false;
-                downArrowCounter = 0;
-            }
+            // The dinosaur remains crouched while the timer is active
+            downArrowPressed = crouchFramesLeft > 0;
         }
 
         void TrySpawnObstacle()
@@ -238,15 +242,11 @@ namespace Drago
                 {
                     obstacles.RemoveAt(i);
                     continue;
-                }
+                }              
 
-                //else if (RectIntersectRect(
-                             //dino.X, dino.Y - dino.Height, dino.Width, dino.Height,
-                             //obstacle.X, obstacle.Y - obstacle.Height, obstacle.Width, obstacle.Height))
-
-                    // Collision: compare rectangles (AABB)
-                    // OOP: Bounds is the "interface" of entities outward (they compute their rectangle from their own data)
-                    if (dino.Bounds.Intersects(obstacle.Bounds))
+                // Collision: compare rectangles (AABB)
+                // OOP: Bounds is the "interface" of entities outward (they compute their rectangle from their own data)
+                if (dino.Bounds.Intersects(obstacle.Bounds))
                 {
                     isGameOver = true;
 
