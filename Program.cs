@@ -86,7 +86,8 @@ namespace Drago
 
         void Init()
         {
-            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            // set UTF-8 encoding so non-ASCII characters render correctly in different terminals
+            Console.OutputEncoding = System.Text.Encoding.UTF8; 
 
             // OOP: delegate file work to the FileManager object
             hiScore = fileManager.LoadHiScore();   // load high score
