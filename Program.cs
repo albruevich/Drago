@@ -239,9 +239,13 @@ namespace Drago
                     continue;
                 }
 
-                // Collision: compare rectangles (AABB)
-                // OOP: Bounds is the "interface" of entities outward (they compute their rectangle from their own data)
-                if (dino.Bounds.Intersects(obstacle.Bounds))
+                //else if (RectIntersectRect(
+                             //dino.X, dino.Y - dino.Height, dino.Width, dino.Height,
+                             //obstacle.X, obstacle.Y - obstacle.Height, obstacle.Width, obstacle.Height))
+
+                    // Collision: compare rectangles (AABB)
+                    // OOP: Bounds is the "interface" of entities outward (they compute their rectangle from their own data)
+                    if (dino.Bounds.Intersects(obstacle.Bounds))
                 {
                     isGameOver = true;
 
@@ -460,7 +464,7 @@ namespace Drago
 
         // Bounds is the collision rectangle
         // OOP: the object knows its own size/position and can "present" it outward
-        public Rect Bounds => new Rect(X, Y - Height + 1, Width, Height);
+        public Rect Bounds => new Rect(X, Y - Height, Width, Height);
 
         public Dino(int y)
         {
@@ -569,7 +573,7 @@ namespace Drago
 
         // Collision rectangle
         // OOP: common collision code does not depend on the concrete obstacle type (polymorphism)
-        public Rect Bounds => new Rect(X, Y - Height + 1, Width, Height);
+        public Rect Bounds => new Rect(X, Y - Height, Width, Height);
 
         protected Obstacle(float x, int y)
         {
