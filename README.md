@@ -4,7 +4,7 @@
 
 An educational C# console game designed to demonstrate the core principles of object-oriented programming through a simple but complete game.
 
-The project shows how a small real-time game can be structured using clean architecture, encapsulation, inheritance, and polymorphism.
+The project demonstrates how a small real-time game can be structured using simple architecture for educational purposes, as well as core OOP principles such as encapsulation, inheritance, and polymorphism.
 
 ## Demo
 ![Gameplay](docs/gameplay.gif)
