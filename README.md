@@ -2,9 +2,7 @@
 ![Language](https://img.shields.io/badge/language-C%23-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
-An educational C# console game designed to demonstrate the core principles of object-oriented programming through a simple but complete game.
-
-The project demonstrates how a small real-time game can be structured using simple architecture for educational purposes, as well as core OOP principles such as encapsulation, inheritance, and polymorphism.
+A small educational C# console game demonstrating OOP basics and simple game architecture.
 
 ## Demo
 ![Gameplay](docs/gameplay.gif)
